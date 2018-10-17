@@ -5,7 +5,7 @@
     <string name="action_about">Sobre</string>
     <string name="action_settings">Settings</string>
     <string name="about_dialog_text">
-<![CDATA[
+        <![CDATA[
 <b>Aplicativo dos Carros 2015</b><br>
 Versao %s<br><br>
 <a href="http://www.livroandroid.com.br">http://livroandroid.com.br</a><br><br>
@@ -70,7 +70,7 @@ Versao %s<br><br>
     <string name="sim">Sim</string>
 
     <!-- V -->
-    <string name="vazio" />
+    <string name="vazio"/>
     <string name="video">Vídeo</string>
 
 

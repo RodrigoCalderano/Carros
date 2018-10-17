@@ -5,9 +5,9 @@
     <!-- Variação escura (700) da cor primária para a status bar e contextual app bars -->
     <color name="primary_dark">#512DA8</color>
     <!-- Cor de acentuação para as views (checkbox, textfield etc.) -->
-    <color name="accent">#B388FF</color>
+    <color name="accent">#2196F3</color>
     <!-- Cor para efeito ripple -->
-    <color name="control_highlight">#B3E5FC</color>
+    <color name="control_highlight">#B388FF</color>
 
     <!-- Outras cores -->
     <color name="transparent">#0000</color>
