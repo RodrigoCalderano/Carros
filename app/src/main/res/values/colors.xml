@@ -1,11 +1,11 @@
 <resources>
     <!-- Cores do Tema Material -->
     <!-- Cor primária do aplicativo (intensidade 500 da paleta) -->
-    <color name="primary">#3F51B5</color>
+    <color name="primary">#673AB7</color>
     <!-- Variação escura (700) da cor primária para a status bar e contextual app bars -->
-    <color name="primary_dark">#303F9F</color>
+    <color name="primary_dark">#512DA8</color>
     <!-- Cor de acentuação para as views (checkbox, textfield etc.) -->
-    <color name="accent">#FF4081</color>
+    <color name="accent">#B388FF</color>
     <!-- Cor para efeito ripple -->
     <color name="control_highlight">#B3E5FC</color>
 
