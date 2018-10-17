@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- No capítulo de mapas, adicione a KEY aqui -->
+    <string name="API_KEY"></string>
+</resources>
