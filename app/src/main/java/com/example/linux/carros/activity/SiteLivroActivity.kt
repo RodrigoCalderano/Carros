@@ -1,20 +1,26 @@
 package com.example.linux.carros.activity
 
 import android.graphics.Bitmap
-import android.support.v7.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
+import android.support.v4.widget.SwipeRefreshLayout
 import android.view.View
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ProgressBar
 import com.example.linux.carros.R
+import com.example.linux.carros.activity.dialogs.AboutDialog
 import com.example.linux.carros.extensions.setupToolbar
 
 class SiteLivroActivity : BaseActivity() {
 
     private val URL_SOBRE = "http://www.livroandroid.com.br/sobre.htm"
+    private val URL_SOBRE_TESTE = "http://www.facebook.com.br"
     var webview: WebView? = null
     var progress: ProgressBar? = null
+    var swipeToRefresh : SwipeRefreshLayout? = null
 
     override fun onCreate(icicle: Bundle?) {
         super.onCreate(icicle)
@@ -28,6 +34,15 @@ class SiteLivroActivity : BaseActivity() {
 
         setWebViewClient(webview)
         webview?.loadUrl(URL_SOBRE)
+
+        swipeToRefresh = findViewById<SwipeRefreshLayout>(R.id.swipeToRefresh)
+        swipeToRefresh?.setOnRefreshListener {
+            webview?.reload()
+        }
+        swipeToRefresh?.setColorSchemeResources(
+            R.color.refresh_progress_1,
+            R.color.refresh_progress_2,
+            R.color.refresh_progress_3)
     }
 
     private fun setWebViewClient(webView: WebView?) {
@@ -39,6 +54,18 @@ class SiteLivroActivity : BaseActivity() {
 
             override fun onPageFinished(view: WebView?, url: String?) {
                 progress?.visibility = View.INVISIBLE
+                swipeToRefresh?.isRefreshing = false
+            }
+
+            // PEGA O FINAL DA DA URL E COMPARA COM SOBRE.HTM, SE FOR ABRE DIALOG
+            @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+                val url = request?.url.toString()
+                if (url.endsWith("sobre.htm")) {
+                    AboutDialog.showAbout(supportFragmentManager)
+                    return true
+                }
+                return super.shouldOverrideUrlLoading(view, request)
             }
         }
     }

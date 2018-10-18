@@ -16,11 +16,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbarCarros">
 
-        <WebView
-                android:id="@+id/webview"
+        <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipeToRefresh"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-        </WebView>
+
+            <WebView
+                    android:id="@+id/webview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+            </WebView>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
 
         <ProgressBar
                 android:id="@+id/progress"
