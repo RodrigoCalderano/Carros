@@ -13,14 +13,24 @@ import android.widget.ProgressBar
 import com.example.linux.carros.R
 import com.example.linux.carros.activity.dialogs.AboutDialog
 import com.example.linux.carros.extensions.setupToolbar
+import kotlinx.android.synthetic.main.activity_site_livro.*
+import org.jetbrains.anko.alert
 
 class SiteLivroActivity : BaseActivity() {
 
     private val URL_SOBRE = "http://www.livroandroid.com.br/sobre.htm"
     private val URL_SOBRE_TESTE = "http://www.facebook.com.br"
-    var webview: WebView? = null
-    var progress: ProgressBar? = null
-    var swipeToRefresh : SwipeRefreshLayout? = null
+
+    // Para EXECUTAR SCRIPT na página, precisa fazer:
+//    val settings = webview.settings
+//    settings.javaScriptEnabled = true
+    // Feito isso, o JavaScript funciona na webview, por exemplo:
+    // webview.loadUrl("javascript:alert(Olá)")
+
+    // Para INJETAR HTML:
+
+//    webView.loadData("<html><body> HTML AQUI </body></html>", "text/html", "UTF-8")
+
 
     override fun onCreate(icicle: Bundle?) {
         super.onCreate(icicle)
@@ -29,39 +39,42 @@ class SiteLivroActivity : BaseActivity() {
         val actionBar = setupToolbar(R.id.toolbarCarros)
         actionBar.setDisplayHomeAsUpEnabled(true)
 
-        webview = findViewById(R.id.webview)
-        progress = findViewById(R.id.progress)
-
         setWebViewClient(webview)
-        webview?.loadUrl(URL_SOBRE)
+        webview.loadUrl(URL_SOBRE)
 
-        swipeToRefresh = findViewById<SwipeRefreshLayout>(R.id.swipeToRefresh)
-        swipeToRefresh?.setOnRefreshListener {
-            webview?.reload()
+        swipeToRefresh.setOnRefreshListener {
+            webview.reload()
         }
-        swipeToRefresh?.setColorSchemeResources(
-            R.color.refresh_progress_1,
-            R.color.refresh_progress_2,
-            R.color.refresh_progress_3)
+        swipeToRefresh.setColorSchemeResources(
+            R.color.refresh_progress_1, // Progress
+            R.color.refresh_progress_2, // Swipe
+            R.color.refresh_progress_3) // ?
     }
 
-    private fun setWebViewClient(webView: WebView?) {
-        webView?.webViewClient = object : WebViewClient() {
-            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+    private fun setWebViewClient(webView: WebView) {
+        webView.webViewClient = object : WebViewClient() {
+            override fun onPageStarted(view: WebView, url: String?, favicon: Bitmap?) {
                 super.onPageStarted(view, url, favicon)
-                progress?.visibility = View.VISIBLE
+                progress.visibility = View.VISIBLE
             }
 
-            override fun onPageFinished(view: WebView?, url: String?) {
-                progress?.visibility = View.INVISIBLE
-                swipeToRefresh?.isRefreshing = false
+            override fun onPageFinished(view: WebView, url: String?) {
+                progress.visibility = View.INVISIBLE
+                swipeToRefresh.isRefreshing = false
             }
 
             // PEGA O FINAL DA DA URL E COMPARA COM SOBRE.HTM, SE FOR ABRE DIALOG
             @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+            override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest?): Boolean {
                 val url = request?.url.toString()
                 if (url.endsWith("sobre.htm")) {
+
+                    // USANDO ALERT DIALOG DO ANKO:
+//                    alert(R.string.dummy, R.string.app_name){
+//                        positiveButton(R.string.ok) { }
+//                    }.show()
+
+                    // USANDO CUSTOM ALERT
                     AboutDialog.showAbout(supportFragmentManager)
                     return true
                 }

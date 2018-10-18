@@ -22,6 +22,7 @@ Versao %s<br><br>
     <string name="classico">Clássico</string>
 
     <!-- D -->
+    <string name="dummy">asd assdd easddas dummy test</string>
     <string name="descricao">Descrição</string>
     <string name="action_deletar">Deletar</string>
 
