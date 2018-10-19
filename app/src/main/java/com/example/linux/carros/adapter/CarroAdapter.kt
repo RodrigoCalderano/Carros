@@ -10,6 +10,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import com.example.linux.carros.R
 import com.example.linux.carros.domain.Carro
+import com.example.linux.carros.extensions.loadUrl
 import com.squareup.picasso.Picasso
 
 class CarroAdapter( val carros: List<Carro>, val onClick: (Carro) -> Unit) :
@@ -46,18 +47,7 @@ class CarroAdapter( val carros: List<Carro>, val onClick: (Carro) -> Unit) :
             // Deixa o ImageView vazio se não tem foto
             holder.img.setImageBitmap(null)
         } else {
-            // Faz o download da foto e mostra o ProgressBar
-            Picasso.with(context).load(carro.urlFoto).fit().into(holder.img,
-                object : com.squareup.picasso.Callback {
-                    override fun onSuccess() {
-                        // Download OK
-                        holder.progress.visibility = View.GONE
-                    }
-
-                    override fun onError() {
-                        holder.progress.visibility = View.GONE
-                    }
-                })
+            holder.img.loadUrl(carro.urlFoto, holder.progress)
         }
         holder.itemView.setOnClickListener { onClick(carro) }
     }

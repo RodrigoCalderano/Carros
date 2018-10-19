@@ -42,12 +42,16 @@ class CarrosActivity : BaseActivity() {
         recyclerView.itemAnimator = DefaultItemAnimator()
         recyclerView.setHasFixedSize(true)
     }
+
     private fun taskCarros() {
+        // Busca carros
         this.carros = CarroService.getCarros(context,tipo)
         // Atualiza a lsita
-        recyclerView.adapter = CarroAdapter(carros)
-            { carro : Carro ->
-                toast("Cliccou no carro ${carro.nome}")
-            }
+        // Quando se tem somente um parâmetro, ele se chama IT por padrão
+        recyclerView.adapter = CarroAdapter(carros) { onClickCarro(it) }
+    }
+
+    private fun onClickCarro(carro: Carro) {
+        toast("Clicou no carro ${carro.nome}")
     }
 }
