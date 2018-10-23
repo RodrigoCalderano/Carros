@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.activity_carro.*
 class CarroActivity : BaseActivity() {
     // Pega o carro que é passado por parâmetro através de serializable
     // by lazy significa que só vai instanciar quando precisar usar
-    val carro by lazy { intent.getSerializableExtra("carroParam") as Carro }
+    val carro : Carro by lazy { intent.getParcelableExtra<Carro>("carroParam") }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
