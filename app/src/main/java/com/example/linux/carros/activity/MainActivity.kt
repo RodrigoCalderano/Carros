@@ -1,13 +1,14 @@
 package com.example.linux.carros.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
 import com.example.linux.carros.R
+import com.example.linux.carros.adapter.TabsAdapter
 import com.example.linux.carros.domain.TipoCarro
 import com.example.linux.carros.extensions.setupToolbar
 import kotlinx.android.synthetic.main.activity_main.*
@@ -25,11 +26,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         setupToolbar(R.id.toolbarCarros)
         // Menu lateral:
         setUpNavDrawer()
-        // Floating button:
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
+        // Tabs
+        setupViewPagerTabs()
     }
 
     private fun setUpNavDrawer() {
@@ -39,6 +37,20 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
+    }
+
+    private fun setupViewPagerTabs(){
+        // Configura o ViewPager + Tabs
+        // As variáveis viewPager e tabLayout são geradas automaticamente pelo Kotlin Extensions
+        // Mantem 2 a mais do que está exibindo
+        viewPager.offscreenPageLimit = 2
+        viewPager.adapter = TabsAdapter(context, supportFragmentManager)
+        tabLayout.setupWithViewPager(viewPager)
+        // Cor branca no texto
+        val cor = ContextCompat.getColor(context, R.color.white)
+        tabLayout.setTabTextColors(cor, cor)
+        // Cor da barrinha de seleção
+        tabLayout.setSelectedTabIndicatorColor(cor)
     }
 
     override fun onBackPressed() {
