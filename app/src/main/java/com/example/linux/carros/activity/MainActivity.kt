@@ -55,13 +55,13 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 toast("Clicou em carros")
             }
             R.id.nav_item_carros_classicos -> {
-                startActivity<CarrosActivity>("tipo" to TipoCarro.Classicos)
+                startActivity<CarrosActivity>("tipoParam" to TipoCarro.Classicos)
             }
             R.id.nav_item_carros_esportivos -> {
-                startActivity<CarrosActivity>("tipo" to TipoCarro.Esportivos)
+                startActivity<CarrosActivity>("tipoParam" to TipoCarro.Esportivos)
             }
             R.id.nav_item_carros_luxo -> {
-                startActivity<CarrosActivity>("tipo" to TipoCarro.Luxo)
+                startActivity<CarrosActivity>("tipoParam" to TipoCarro.Luxo)
             }
             R.id.nav_item_site_livro -> {
                 startActivity<SiteLivroActivity>()

@@ -7,7 +7,7 @@
     <!-- Cor de acentuação para as views (checkbox, textfield etc.) -->
     <color name="accent">#2196F3</color>
     <!-- Cor para efeito ripple -->
-    <color name="control_highlight">#B388FF</color>
+    <color name="control_highlight">#B3E5FC</color>
 
     <!-- Outras cores -->
     <color name="transparent">#0000</color>

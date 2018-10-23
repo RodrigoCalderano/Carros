@@ -10,6 +10,7 @@ import com.example.linux.carros.domain.CarroService
 import com.example.linux.carros.domain.TipoCarro
 import com.example.linux.carros.extensions.setupToolbar
 import kotlinx.android.synthetic.main.activity_carros.*
+import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 
 class CarrosActivity : BaseActivity() {
@@ -36,7 +37,7 @@ class CarrosActivity : BaseActivity() {
         // Liga o up navigation
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         // Lê o tipo dos argumentos vieram por put extra
-        this.tipo = intent.getSerializableExtra("tipo") as TipoCarro
+        this.tipo = intent.getSerializableExtra("tipoParam") as TipoCarro
         // RecylcerView
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.itemAnimator = DefaultItemAnimator()
@@ -52,6 +53,7 @@ class CarrosActivity : BaseActivity() {
     }
 
     private fun onClickCarro(carro: Carro) {
-        toast("Clicou no carro ${carro.nome}")
+        // passando o objeto carro por parâmetro na intent (Carro é serializable)
+        startActivity<CarroActivity>("carroParam" to carro)
     }
 }
