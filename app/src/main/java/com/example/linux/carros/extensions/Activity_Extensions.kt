@@ -6,6 +6,8 @@ import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.View
+import kotlinx.android.synthetic.main.include_activity_carro.*
+import kotlinx.android.synthetic.main.activity_carro.*
 
 // findViewById + setOnClickListener
 fun AppCompatActivity.onClick(@IdRes viewId: Int, onClick: (v: android.view.View?) -> Unit){

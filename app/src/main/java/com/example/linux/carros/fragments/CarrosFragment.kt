@@ -14,6 +14,7 @@ import com.example.linux.carros.domain.TipoCarro
 import com.example.linux.carros.extensions.setupToolbar
 import com.example.linux.carros.fragments.BaseFragment
 import kotlinx.android.synthetic.main.activity_carros.*
+import kotlinx.android.synthetic.main.fragment_carros.*
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 
@@ -27,7 +28,7 @@ class CarrosFragment : BaseFragment() {
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_carros, container, false)
         // Lê o tipo dos argumentos
-        this.tipo = arguments?.getSerializable("tipo") as TipoCarro
+        this.tipo = arguments?.getSerializable("tipoP") as TipoCarro
         return view
     }
 

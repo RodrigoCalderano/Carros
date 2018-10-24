@@ -6,6 +6,7 @@ import com.example.linux.carros.domain.Carro
 import com.example.linux.carros.extensions.loadUrl
 import com.example.linux.carros.extensions.setupToolbar
 import kotlinx.android.synthetic.main.activity_carro.*
+import kotlinx.android.synthetic.main.include_activity_carro.*
 
 class CarroActivity : BaseActivity() {
     // Pega o carro que é passado por parâmetro através de serializable
@@ -19,10 +20,10 @@ class CarroActivity : BaseActivity() {
     }
 
     private fun createSetup() {
-        setupToolbar(R.id.toolbarCarros, carro.nome, true)
+        setupToolbar(R.id.toolbarAC, carro.nome, true)
         // Atualiza a descrição do carro
         tDesc.text = carro.desc
         // Mostra a foto do carro (feito na extensão Picasso.kt)
-        img.loadUrl(carro.urlFoto)
+        appBarImg.loadUrl(carro.urlFoto)
     }
 }

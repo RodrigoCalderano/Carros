@@ -28,6 +28,11 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         setUpNavDrawer()
         // Tabs
         setupViewPagerTabs()
+        // FAB
+        fab.setOnClickListener {
+            val snack = Snackbar.make(it, "Clicou no botão FAB!", Snackbar.LENGTH_LONG)
+            snack.show()
+        }
     }
 
     private fun setUpNavDrawer() {
@@ -43,6 +48,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         // Configura o ViewPager + Tabs
         // As variáveis viewPager e tabLayout são geradas automaticamente pelo Kotlin Extensions
         // Mantem 2 a mais do que está exibindo
+
         viewPager.offscreenPageLimit = 2
         viewPager.adapter = TabsAdapter(context, supportFragmentManager)
         tabLayout.setupWithViewPager(viewPager)
@@ -67,13 +73,13 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 toast("Clicou em carros")
             }
             R.id.nav_item_carros_classicos -> {
-                startActivity<CarrosActivity>("tipoParam" to TipoCarro.Classicos)
+                startActivity<CarrosActivity>("tipoP" to TipoCarro.Classicos)
             }
             R.id.nav_item_carros_esportivos -> {
-                startActivity<CarrosActivity>("tipoParam" to TipoCarro.Esportivos)
+                startActivity<CarrosActivity>("tipoP" to TipoCarro.Esportivos)
             }
             R.id.nav_item_carros_luxo -> {
-                startActivity<CarrosActivity>("tipoParam" to TipoCarro.Luxo)
+                startActivity<CarrosActivity>("tipoP" to TipoCarro.Luxo)
             }
             R.id.nav_item_site_livro -> {
                 startActivity<SiteLivroActivity>()

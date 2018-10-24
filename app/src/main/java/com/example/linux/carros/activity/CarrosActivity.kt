@@ -21,39 +21,27 @@ class CarrosActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_carros)
         // Inicializações necessárias (toolbar, up navigation, views..)
-        createSetup()
-    }
-
-    // Inicializar lógica da tela
-    override fun onResume() {
-        super.onResume()
-        taskCarros()
-    }
-
-    private fun createSetup() {
         setupToolbar(R.id.toolbarCarros)
         // Liga o up navigation
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         // Lê o tipo dos argumentos vieram por put extra
-        this.tipo = intent.getSerializableExtra("tipoParam") as TipoCarro
-        // RecylcerView
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.itemAnimator = DefaultItemAnimator()
-        recyclerView.setHasFixedSize(true)
-    }
+        this.tipo = intent.getSerializableExtra("tipoP") as TipoCarro
+        // Título
+        val s = context.getString(tipo.string)
+        supportActionBar?.title = s
 
-    private fun taskCarros() {
-        // Busca carros
-        this.carros = CarroService.getCarros(context,tipo)
-        // Atualiza a lsita
-        // Quando se tem somente um parâmetro, ele se chama IT por padrão
-        recyclerView.adapter = CarroAdapter(carros) { onClickCarro(it) }
-    }
-
-    private fun onClickCarro(carro: Carro) {
-        // passando o objeto carro por parâmetro na intent (Carro é serializable)
-        startActivity<CarroActivity>("carroParam" to carro)
+        //Adiciona o fragment no layout
+        if (savedInstanceState == null) {
+            // Cria uma instância do fragment, e configura os argumentos
+            val frag = CarrosFragment()
+            // Dentre os argumentos que foram passados para a activity, está o tipo do carro
+            frag.arguments = intent.extras
+            // Adiciona o fragment no layout de marcação
+            supportFragmentManager.beginTransaction().add(R.id.container, frag).commit()
+        }
     }
 }
+
