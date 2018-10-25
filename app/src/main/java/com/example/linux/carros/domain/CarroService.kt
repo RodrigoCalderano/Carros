@@ -1,10 +1,8 @@
 package com.example.linux.carros.domain
 
 import android.content.Context
-import android.util.Log
 import com.example.linux.carros.R
-import com.example.linux.carros.extensions.getText
-import com.example.linux.carros.extensions.getXml
+import com.example.linux.carros.extensions.fromJson
 
 object CarroService {
     private const val TAG = "livro"
@@ -16,9 +14,9 @@ object CarroService {
         val resources = context.resources
         val inputStream = resources.openRawResource(raw)
         inputStream.bufferedReader().use {
-            // Lê o XML e cria a lista de carros
-            val xml = it.readText()
-            val carros = parserXML(xml)
+            // Lê o JSON e cria a lista de carros
+            val json = it.readText()
+            val carros = fromJson<List<Carro>>(json)
             return carros
         }
     }
@@ -30,22 +28,4 @@ object CarroService {
         else -> R.raw.carros_luxo
     }
 
-    // Lê o XML e cria a lista de carros
-    private fun parserXML(xmlString: String): List<Carro> {
-        val carros = mutableListOf<Carro>()
-        val xml = xmlString.getXml()
-        // Lê todas as tags <carro>
-        val nodeCarros = xml.getChildren("carro")
-        // Insere cada carro na lista
-        for (node in nodeCarros) {
-            val c = Carro()
-            // Lê as informações de cada carro
-            c.nome = node.getText("nome")
-            c.desc = node.getText("desc")
-            c.urlFoto = node.getText("url_foto")
-            carros.add(c)
-        }
-        Log.d(TAG, "${carros.size} carros encontrados.")
-        return carros
-    }
 }
