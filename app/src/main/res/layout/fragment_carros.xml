@@ -14,4 +14,7 @@
             listSelector="@android:color/transparent"
             android:scrollbarStyle="outsideOverlay"
             android:scrollbars="vertical"/>
+
+    <include layout="@layout/include_progress" />
+
 </FrameLayout>

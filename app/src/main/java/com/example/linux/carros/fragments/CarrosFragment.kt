@@ -16,6 +16,7 @@ import com.example.linux.carros.extensions.setupToolbar
 import com.example.linux.carros.fragments.BaseFragment
 import kotlinx.android.synthetic.main.activity_carros.*
 import kotlinx.android.synthetic.main.fragment_carros.*
+import kotlinx.android.synthetic.main.include_progress.*
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 
@@ -50,10 +51,8 @@ class CarrosFragment : BaseFragment() {
     }
 
     private fun taskCarros() {
-        // Mostra uma janela do progresso
-        val dialog = ProgressDialog.show(activity, getString(R.string.app_name),
-            "Por favor aguarde...", false, true
-        )
+        // Liga a animação do ProgressBar
+        progress.visibility = View.VISIBLE
         object : Thread() {
             override fun run() {
                 // Busca carros
@@ -61,8 +60,8 @@ class CarrosFragment : BaseFragment() {
                 // Atualiza a lista
                 activity?.runOnUiThread(Runnable {
                     recyclerView.adapter = CarroAdapter(carros) { onClickCarro(it) }
-                    // Fecha o ProgressDialog
-                    dialog.dismiss()
+                    // Esconde o ProgressBar
+                    progress.visibility = View.INVISIBLE
                 })
             }
         }.start()
