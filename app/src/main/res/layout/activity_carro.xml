@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <android.support.design.widget.CoordinatorLayout
+<android.support.design.widget.CoordinatorLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
@@ -29,16 +29,29 @@
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
                 app:contentScrim="?attr/colorPrimary"
-                android:background="@drawable/header_appbar"
+                android:background="#7986cb"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
-            <!-- Esta é a imagem do header -->
-            <ImageView
-                    android:id="@+id/appBarImg"
+
+            <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fitsSystemWindows="true"
-                    app:layout_collapseMode="parallax"
-                    android:scaleType="centerCrop"/>
+                    android:layout_height="match_parent">
+
+                <ImageView
+                        android:id="@+id/appBarImg"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:fitsSystemWindows="true"
+                        app:layout_collapseMode="parallax"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginBottom="60dp" android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="60dp"/>
+
+            </android.support.constraint.ConstraintLayout>
+            <!-- Esta é a imagem do header -->
+
 
             <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbarAC"
