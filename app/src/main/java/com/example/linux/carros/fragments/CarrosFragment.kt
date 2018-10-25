@@ -1,5 +1,6 @@
 package com.example.linux.carros.activity
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
@@ -18,6 +19,7 @@ import kotlinx.android.synthetic.main.fragment_carros.*
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 
+@Suppress("DEPRECATION")
 class CarrosFragment : BaseFragment() {
 
     private var tipo = TipoCarro.Classicos
@@ -48,16 +50,27 @@ class CarrosFragment : BaseFragment() {
     }
 
     private fun taskCarros() {
-        // Busca carros
-        this.carros = CarroService.getCarros(context,tipo)
-        // Atualiza a lsita
-        // Quando se tem somente um parâmetro, ele se chama IT por padrão
-        recyclerView.adapter = CarroAdapter(carros) { onClickCarro(it) }
+        // Mostra uma janela do progresso
+        val dialog = ProgressDialog.show(activity, getString(R.string.app_name),
+            "Por favor aguarde...", false, true
+        )
+        object : Thread() {
+            override fun run() {
+                // Busca carros
+                carros = CarroService.getCarros(tipo)
+                // Atualiza a lista
+                activity?.runOnUiThread(Runnable {
+                    recyclerView.adapter = CarroAdapter(carros) { onClickCarro(it) }
+                    // Fecha o ProgressDialog
+                    dialog.dismiss()
+                })
+            }
+        }.start()
     }
 
-    private fun onClickCarro(carro: Carro) {
-        // passando o objeto carro por parâmetro na intent (Carro é serializable)
-        // o fragment não possui o método start activity, poir isso usar a host activity
-        activity?.startActivity<CarroActivity>("carroParam" to carro)
+    // Trata o evento de clique no carro
+    fun onClickCarro(carro: Carro){
+        activity?.startActivity<CarroActivity>("carroParamCarrosFrag2CarroAct" to carro)
     }
 }
+

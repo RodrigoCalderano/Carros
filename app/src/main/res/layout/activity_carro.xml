@@ -52,7 +52,6 @@
             </android.support.constraint.ConstraintLayout>
             <!-- Esta é a imagem do header -->
 
-
             <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbarAC"
                     android:layout_width="match_parent"
