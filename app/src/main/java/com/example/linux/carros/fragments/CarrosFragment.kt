@@ -11,6 +11,7 @@ import com.example.linux.carros.R
 import com.example.linux.carros.adapter.CarroAdapter
 import com.example.linux.carros.domain.Carro
 import com.example.linux.carros.domain.CarroService
+import com.example.linux.carros.domain.RefreshListEvent
 import com.example.linux.carros.domain.TipoCarro
 import com.example.linux.carros.extensions.setupToolbar
 import com.example.linux.carros.fragments.BaseFragment
@@ -18,6 +19,9 @@ import com.example.linux.carros.utils.AndroidUtils
 import kotlinx.android.synthetic.main.activity_carros.*
 import kotlinx.android.synthetic.main.fragment_carros.*
 import kotlinx.android.synthetic.main.include_progress.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
@@ -36,6 +40,24 @@ class CarrosFragment : BaseFragment() {
         // Lê o tipo dos argumentos
         this.tipo = arguments?.getSerializable("tipoP") as TipoCarro
         return view
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // Registra no bus de ventos
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Cancela o registro no bus de eventos
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: RefreshListEvent) {
+        // Recebeu o evento
+        taskCarros()
     }
 
     // Inicializa as views

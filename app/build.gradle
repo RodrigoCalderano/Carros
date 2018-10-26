@@ -44,4 +44,6 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.2'
     // OkHttp
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    // Bus de Eventos
+    implementation 'org.greenrobot:eventbus:3.1.1'
 }

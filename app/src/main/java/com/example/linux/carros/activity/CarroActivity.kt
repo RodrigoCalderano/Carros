@@ -6,10 +6,12 @@ import android.view.MenuItem
 import com.example.linux.carros.R
 import com.example.linux.carros.domain.Carro
 import com.example.linux.carros.domain.CarroService
+import com.example.linux.carros.domain.RefreshListEvent
 import com.example.linux.carros.extensions.loadUrl
 import com.example.linux.carros.extensions.setupToolbar
 import kotlinx.android.synthetic.main.activity_carro.*
 import kotlinx.android.synthetic.main.include_activity_carro.*
+import org.greenrobot.eventbus.EventBus
 import org.jetbrains.anko.*
 
 class CarroActivity : BaseActivity() {
@@ -60,6 +62,8 @@ class CarroActivity : BaseActivity() {
         doAsync {
             val response = CarroService.delete(carro)
             uiThread {
+                // Dispara evento para atualizar a lista de carros
+                EventBus.getDefault().post(RefreshListEvent())
                 toast(response.msg)
                 finish()
             }

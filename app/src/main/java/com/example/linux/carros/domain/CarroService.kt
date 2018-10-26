@@ -1,6 +1,7 @@
 package com.example.linux.carros.domain
 
 
+import android.util.Log
 import com.example.linux.carros.extensions.fromJson
 import com.example.linux.carros.extensions.toJson
 import com.example.linux.carros.utils.HttpHelper
@@ -25,6 +26,8 @@ object CarroService {
         val json = HttpHelper.post(BASE_URL, carro.toJson())
         // Lê a resposta
         val response = fromJson<Response>(json)
+        Log.e("tag", "1 save")
+        Log.e("tag", carro.toJson())
         return response
     }
 
