@@ -14,6 +14,7 @@ import com.example.linux.carros.domain.CarroService
 import com.example.linux.carros.domain.TipoCarro
 import com.example.linux.carros.extensions.setupToolbar
 import com.example.linux.carros.fragments.BaseFragment
+import com.example.linux.carros.utils.AndroidUtils
 import kotlinx.android.synthetic.main.activity_carros.*
 import kotlinx.android.synthetic.main.fragment_carros.*
 import kotlinx.android.synthetic.main.include_progress.*
@@ -54,14 +55,17 @@ class CarrosFragment : BaseFragment() {
     private fun taskCarros() {
         // Liga a animação do ProgressBar
         progress.visibility = View.VISIBLE
-        doAsync {
-            // Busca os carros
-            carros = CarroService.getCarros(tipo)
-            uiThread {
-                // Atualiza a lista
-                recyclerView.adapter = CarroAdapter(carros) { onClickCarro(it) }
-                // Esconde o ProgressBar
-                progress.visibility = View.INVISIBLE
+        val internetOk = AndroidUtils.isNetworkAvailable(context)
+        if (internetOk){
+            doAsync {
+                // Busca os carros
+                carros = CarroService.getCarros(tipo)
+                uiThread {
+                    // Atualiza a lista
+                    recyclerView.adapter = CarroAdapter(carros) { onClickCarro(it) }
+                    // Esconde o ProgressBar
+                    progress.visibility = View.INVISIBLE
+                }
             }
         }
     }
