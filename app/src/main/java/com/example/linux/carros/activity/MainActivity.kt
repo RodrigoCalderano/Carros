@@ -30,8 +30,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         setupViewPagerTabs()
         // FAB
         fab.setOnClickListener {
-            val snack = Snackbar.make(it, "Clicou no botão FAB!", Snackbar.LENGTH_LONG)
-            snack.show()
+            // Abre a tela de cadastro
+            startActivity<CarroFormActivity>()
         }
     }
 
