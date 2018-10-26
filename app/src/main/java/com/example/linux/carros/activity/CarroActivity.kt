@@ -5,12 +5,12 @@ import android.view.Menu
 import android.view.MenuItem
 import com.example.linux.carros.R
 import com.example.linux.carros.domain.Carro
+import com.example.linux.carros.domain.CarroService
 import com.example.linux.carros.extensions.loadUrl
 import com.example.linux.carros.extensions.setupToolbar
 import kotlinx.android.synthetic.main.activity_carro.*
 import kotlinx.android.synthetic.main.include_activity_carro.*
-import org.jetbrains.anko.startActivity
-import org.jetbrains.anko.toast
+import org.jetbrains.anko.*
 
 class CarroActivity : BaseActivity() {
     // Pega o carro que é passado por parâmetro através de serializable
@@ -44,9 +44,27 @@ class CarroActivity : BaseActivity() {
                 finish()
             }
             R.id.action_deletar -> {
-                toast("deletar o carro")
+                // Mostra o alerta de confirmação
+                alert("Deseja excluir este carro?") {
+                    title = "Alert"
+                    positiveButton(R.string.sim) { taskDeletar() }
+                    negativeButton(R.string.nao) { }
+                }.show()
             }
         }
         return super.onOptionsItemSelected(item)
     }
+
+    // Deleta o carro
+    private fun taskDeletar() {
+        doAsync {
+            val response = CarroService.delete(carro)
+            uiThread {
+                toast(response.msg)
+                finish()
+            }
+        }
+    }
+
+
 }
