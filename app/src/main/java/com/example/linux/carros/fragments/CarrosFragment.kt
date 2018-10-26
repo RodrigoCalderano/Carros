@@ -17,8 +17,10 @@ import com.example.linux.carros.fragments.BaseFragment
 import kotlinx.android.synthetic.main.activity_carros.*
 import kotlinx.android.synthetic.main.fragment_carros.*
 import kotlinx.android.synthetic.main.include_progress.*
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
+import org.jetbrains.anko.uiThread
 
 @Suppress("DEPRECATION")
 class CarrosFragment : BaseFragment() {
@@ -44,27 +46,24 @@ class CarrosFragment : BaseFragment() {
         recyclerView.setHasFixedSize(true)
     }
 
-    // Inicializar lógica da tela
-    override fun onResume() {
-        super.onResume()
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         taskCarros()
     }
 
     private fun taskCarros() {
         // Liga a animação do ProgressBar
         progress.visibility = View.VISIBLE
-        object : Thread() {
-            override fun run() {
-                // Busca carros
-                carros = CarroService.getCarros(tipo)
+        doAsync {
+            // Busca os carros
+            carros = CarroService.getCarros(tipo)
+            uiThread {
                 // Atualiza a lista
-                activity?.runOnUiThread(Runnable {
-                    recyclerView.adapter = CarroAdapter(carros) { onClickCarro(it) }
-                    // Esconde o ProgressBar
-                    progress.visibility = View.INVISIBLE
-                })
+                recyclerView.adapter = CarroAdapter(carros) { onClickCarro(it) }
+                // Esconde o ProgressBar
+                progress.visibility = View.INVISIBLE
             }
-        }.start()
+        }
     }
 
     // Trata o evento de clique no carro
