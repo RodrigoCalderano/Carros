@@ -1,5 +1,6 @@
 package com.example.linux.carros.activity
 
+import android.annotation.SuppressLint
 import android.app.ProgressDialog
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
@@ -7,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.linux.carros.R
 import com.example.linux.carros.adapter.CarroAdapter
 import com.example.linux.carros.domain.Carro
@@ -16,6 +18,10 @@ import com.example.linux.carros.domain.TipoCarro
 import com.example.linux.carros.extensions.setupToolbar
 import com.example.linux.carros.fragments.BaseFragment
 import com.example.linux.carros.utils.AndroidUtils
+import io.reactivex.Observable
+import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_carros.*
 import kotlinx.android.synthetic.main.fragment_carros.*
 import kotlinx.android.synthetic.main.include_progress.*
@@ -74,23 +80,27 @@ class CarrosFragment : BaseFragment() {
         taskCarros()
     }
 
+    @SuppressLint("CheckResult")
     private fun taskCarros() {
         // Liga a animação do ProgressBar
         progress.visibility = View.VISIBLE
-        val internetOk = AndroidUtils.isNetworkAvailable(context)
-        if (internetOk){
-            doAsync {
-                // Busca os carros
-                carros = CarroService.getCarros(tipo)
-                uiThread {
-                    // Atualiza a lista
-                    recyclerView.adapter = CarroAdapter(carros) { onClickCarro(it) }
-                    // Esconde o ProgressBar
-                    progress.visibility = View.INVISIBLE
-                }
-            }
-        }
+        Observable.fromCallable { CarroService.getCarros(tipo) } // busca os carros
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe ({
+                /** onNext **/
+                // Atualiza interface
+                // it é o parâmetro default das lambdas, sendo que neste caso é a lista de carros
+                recyclerView.adapter = CarroAdapter(it) { onClickCarro(it) }
+                progress.visibility = View.INVISIBLE
+            },{
+                /** onError **/
+                activity!!.toast("Ocorreu um erro!")
+                progress.visibility = View.INVISIBLE
+
+            })
     }
+
 
     // Trata o evento de clique no carro
     fun onClickCarro(carro: Carro){
