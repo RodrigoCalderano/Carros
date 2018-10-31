@@ -1,4 +1,4 @@
-package com.example.linux.carros.activity
+package com.example.linux.carros.fragments
 
 import android.annotation.SuppressLint
 import android.app.ProgressDialog
@@ -10,11 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.linux.carros.R
+import com.example.linux.carros.activity.CarroActivity
 import com.example.linux.carros.adapter.CarroAdapter
-import com.example.linux.carros.domain.Carro
-import com.example.linux.carros.domain.CarroService
-import com.example.linux.carros.domain.RefreshListEvent
-import com.example.linux.carros.domain.TipoCarro
+import com.example.linux.carros.domain.*
 import com.example.linux.carros.extensions.setupToolbar
 import com.example.linux.carros.fragments.BaseFragment
 import com.example.linux.carros.utils.AndroidUtils
@@ -84,7 +82,7 @@ class CarrosFragment : BaseFragment() {
     private fun taskCarros() {
         // Liga a animação do ProgressBar
         progress.visibility = View.VISIBLE
-        Observable.fromCallable { CarroService.getCarros(tipo) } // busca os carros
+        Observable.fromCallable { CarroServiceRetrofit.getCarros(tipo) } // busca os carros
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe ({

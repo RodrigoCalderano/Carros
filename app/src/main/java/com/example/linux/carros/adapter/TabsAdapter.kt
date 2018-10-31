@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import com.example.linux.carros.activity.CarrosFragment
+import com.example.linux.carros.fragments.CarrosFragment
 import com.example.linux.carros.domain.TipoCarro
 
 class TabsAdapter(private val context: Context, fragmentManager: FragmentManager) :

@@ -38,6 +38,5 @@ object CarroService {
         val response = fromJson<Response>(json)
         return response
     }
-
 }
 

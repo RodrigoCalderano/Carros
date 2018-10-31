@@ -9,6 +9,7 @@ import com.example.linux.carros.domain.Carro
 import com.example.linux.carros.domain.CarroService
 import com.example.linux.carros.domain.TipoCarro
 import com.example.linux.carros.extensions.setupToolbar
+import com.example.linux.carros.fragments.CarrosFragment
 import kotlinx.android.synthetic.main.activity_carros.*
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
