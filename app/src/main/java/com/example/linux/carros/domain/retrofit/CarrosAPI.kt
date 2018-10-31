@@ -2,13 +2,15 @@ package com.example.linux.carros.domain.retrofit
 
 import com.example.linux.carros.domain.Carro
 import com.example.linux.carros.domain.Response
+import io.reactivex.Observable
 import retrofit2.Call
 import retrofit2.http.*
 
 
+
 interface CarrosAPI {
     @GET("tipo/{tipo}")
-    fun getCarros(@Path("tipo") tipo: String): Call<List<Carro>>
+    fun getCarros(@Path("tipo") tipo: String): Observable<List<Carro>>
     @POST("./")
     fun save(@Body carro: Carro): Call<Response>
     @DELETE("{id}")

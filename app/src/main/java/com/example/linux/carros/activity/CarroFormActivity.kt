@@ -1,5 +1,6 @@
 package com.example.linux.carros.activity
 
+import android.annotation.SuppressLint
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -10,10 +11,15 @@ import com.example.linux.carros.domain.CarroService
 import com.example.linux.carros.domain.RefreshListEvent
 import com.example.linux.carros.extensions.setupToolbar
 import kotlinx.android.synthetic.main.activity_carro_form_contents.*
+import io.reactivex.Observable
+import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import org.greenrobot.eventbus.EventBus
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
+import java.util.*
 
 class CarroFormActivity : AppCompatActivity() {
 
@@ -45,18 +51,26 @@ class CarroFormActivity : AppCompatActivity() {
     }
 
     // Cria a thread para salvar o carro
+    @SuppressLint("CheckResult")
     private fun taskSalvar() {
-        doAsync {
+        Observable.fromCallable {
+            // Salva o carro no servidor
             val c = getCarroForm()
-            // Salva o carro
-            val response = CarroService.save(c)
-            uiThread {
-                // Dispara evento para atualizar a lista de carros
-                EventBus.getDefault().post(RefreshListEvent())
-                toast(response.msg)
-                finish()
-            }
+            CarroService.save(c)
         }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe ({
+                /** onNext **/
+                // Dispara evento para atualizar a lsita de carros
+                EventBus.getDefault().post(RefreshListEvent())
+                // Mensagem com a resposta do servidor
+                toast(it.msg)
+                finish()
+            },{
+                /** onError **/
+                toast("Ocorreu um erro ao salvar o carro.")
+            })
     }
 
     // Cria um carro com os valores do formulário

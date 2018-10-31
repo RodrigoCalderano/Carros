@@ -82,7 +82,7 @@ class CarrosFragment : BaseFragment() {
     private fun taskCarros() {
         // Liga a animação do ProgressBar
         progress.visibility = View.VISIBLE
-        Observable.fromCallable { CarroServiceRetrofit.getCarros(tipo) } // busca os carros
+        CarroServiceRetrofit.getCarros(tipo) // busca os carros
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe ({
@@ -95,7 +95,6 @@ class CarrosFragment : BaseFragment() {
                 /** onError **/
                 activity!!.toast("Ocorreu um erro!")
                 progress.visibility = View.INVISIBLE
-
             })
     }
 
