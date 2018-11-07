@@ -1,11 +1,14 @@
 package com.example.linux.carros.activity
 
 import android.annotation.SuppressLint
+import android.content.res.ColorStateList
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.view.Menu
 import android.view.MenuItem
 import com.example.linux.carros.R
 import com.example.linux.carros.domain.*
+import com.example.linux.carros.domain.FavoritosService.isFavorito
 import com.example.linux.carros.extensions.loadUrl
 import com.example.linux.carros.extensions.setupToolbar
 import kotlinx.android.synthetic.main.activity_carro.*
@@ -21,6 +24,7 @@ class CarroActivity : BaseActivity() {
     // Pega o carro que é passado por parâmetro através de serializable
     // by lazy significa que só vai instanciar quando precisar usar
     val carro : Carro by lazy { intent.getParcelableExtra<Carro>("carroParamCarrosFrag2CarroAct") }
+    protected var favorito = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +39,7 @@ class CarroActivity : BaseActivity() {
         // Mostra a foto do carro (feito na extensão Picasso.kt)
         appBarImg.loadUrl(carro.urlFoto)
         // fab
+        setFabColor()
         fab.setOnClickListener { onClickFavoritar(carro) }
     }
 
@@ -86,6 +91,7 @@ class CarroActivity : BaseActivity() {
 
     // Deleta o carro
     private fun taskDeletar() {
+        @Suppress
         Observable.fromCallable { CarroServiceRetrofit.delete(carro) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -101,6 +107,22 @@ class CarroActivity : BaseActivity() {
             })
     }
 
-
+    private fun setFabColor() {
+        @Suppress
+        Observable.fromCallable {
+            favorito = isFavorito(carro)
+        }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                val fundo = ContextCompat.getColor(this, if (!favorito) R.color.favorito_on
+                else R.color.favorito_off)
+                val cor = ContextCompat.getColor(this, if (!favorito) R.color.yellow
+                else R.color.favorito_on)
+                fab.backgroundTintList = ColorStateList(arrayOf(intArrayOf(0)), intArrayOf(fundo))
+                fab.setColorFilter(cor)
+                if(favorito) fab.setImageResource(R.drawable.ic_action_remove)
+            }
+    }
 
 }

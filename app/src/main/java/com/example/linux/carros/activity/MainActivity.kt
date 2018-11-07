@@ -51,7 +51,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         // As variáveis viewPager e tabLayout são geradas automaticamente pelo Kotlin Extensions
         // Mantem 2 a mais do que está exibindo
 
-        viewPager.offscreenPageLimit = 2
+        viewPager.offscreenPageLimit = 3
         viewPager.adapter = TabsAdapter(context, supportFragmentManager)
         tabLayout.setupWithViewPager(viewPager)
         // Cor branca no texto

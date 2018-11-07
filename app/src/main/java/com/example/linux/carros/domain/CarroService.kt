@@ -2,6 +2,7 @@ package com.example.linux.carros.domain
 
 
 import android.util.Log
+import com.example.linux.carros.domain.dao.DatabaseManager
 import com.example.linux.carros.extensions.fromJson
 import com.example.linux.carros.extensions.toJson
 import com.example.linux.carros.utils.HttpHelper
@@ -36,6 +37,11 @@ object CarroService {
         val url = "$BASE_URL/${carro.id}"
         val json = HttpHelper.delete(url)
         val response = fromJson<Response>(json)
+        if(response.isOk()) {
+            // Se removeu do servidor, remove dos favoritos
+            val dao = DatabaseManager.getCarroDAO()
+            dao.delete(carro)
+        }
         return response
     }
 }
