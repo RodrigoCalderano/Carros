@@ -1,48 +1,43 @@
 package com.example.linux.carros.fragments
 
 import android.annotation.SuppressLint
-import android.app.ProgressDialog
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.example.linux.carros.R
 import com.example.linux.carros.activity.CarroActivity
 import com.example.linux.carros.adapter.CarroAdapter
-import com.example.linux.carros.domain.*
-import com.example.linux.carros.extensions.setupToolbar
-import com.example.linux.carros.fragments.BaseFragment
-import com.example.linux.carros.utils.AndroidUtils
-import io.reactivex.Observable
-import io.reactivex.Scheduler
+import com.example.linux.carros.domain.Carro
+import com.example.linux.carros.domain.CarroServiceRetrofit
+import com.example.linux.carros.domain.RefreshListEvent
+import com.example.linux.carros.domain.TipoCarro
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_carros.*
 import kotlinx.android.synthetic.main.fragment_carros.*
 import kotlinx.android.synthetic.main.include_progress.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
-import org.jetbrains.anko.uiThread
 
 @Suppress("DEPRECATION")
-class CarrosFragment : BaseFragment() {
+open class CarrosFragment : BaseFragment() {
 
     private var tipo = TipoCarro.Classicos
-    private var carros = listOf<Carro>()
+    protected var carros = listOf<Carro>()
 
     // Cria a view do fragment
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_carros, container, false)
         // Lê o tipo dos argumentos
-        this.tipo = arguments?.getSerializable("tipoP") as TipoCarro
+        if(arguments != null) {
+            this.tipo = arguments?.getSerializable("tipoP") as TipoCarro
+        }
         return view
     }
 
@@ -78,8 +73,9 @@ class CarrosFragment : BaseFragment() {
         taskCarros()
     }
 
+    // Usando Rx
     @SuppressLint("CheckResult")
-    private fun taskCarros() {
+    open fun taskCarros() {
         // Liga a animação do ProgressBar
         progress.visibility = View.VISIBLE
         CarroServiceRetrofit.getCarros(tipo) // busca os carros
@@ -100,7 +96,7 @@ class CarrosFragment : BaseFragment() {
 
 
     // Trata o evento de clique no carro
-    fun onClickCarro(carro: Carro){
+    open fun onClickCarro(carro: Carro){
         activity?.startActivity<CarroActivity>("carroParamCarrosFrag2CarroAct" to carro)
     }
 }

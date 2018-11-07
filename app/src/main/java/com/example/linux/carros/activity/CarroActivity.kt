@@ -1,13 +1,11 @@
 package com.example.linux.carros.activity
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import com.example.linux.carros.R
-import com.example.linux.carros.domain.Carro
-import com.example.linux.carros.domain.CarroService
-import com.example.linux.carros.domain.CarroServiceRetrofit
-import com.example.linux.carros.domain.RefreshListEvent
+import com.example.linux.carros.domain.*
 import com.example.linux.carros.extensions.loadUrl
 import com.example.linux.carros.extensions.setupToolbar
 import kotlinx.android.synthetic.main.activity_carro.*
@@ -15,7 +13,6 @@ import kotlinx.android.synthetic.main.include_activity_carro.*
 import org.greenrobot.eventbus.EventBus
 import org.jetbrains.anko.*
 import io.reactivex.Observable
-import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -37,6 +34,30 @@ class CarroActivity : BaseActivity() {
         tDesc.text = carro.desc
         // Mostra a foto do carro (feito na extensão Picasso.kt)
         appBarImg.loadUrl(carro.urlFoto)
+        // fab
+        fab.setOnClickListener { onClickFavoritar(carro) }
+    }
+
+    private fun onClickFavoritar(carro: Carro) {
+        taskFavoritar(carro)
+    }
+
+    @SuppressLint("CheckResult")
+    private fun taskFavoritar(carro: Carro) {
+        Observable.fromCallable {
+            // Salva o carro no banco de dados
+            FavoritosService.favoritar(carro)
+        }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { favoritado ->
+                // Atualiza a interface
+                // Dispara evento para atualizar a lista de carros
+                EventBus.getDefault().post(RefreshListEvent())
+                // Alerta de sucesso
+                toast(if (favoritado) R.string.msg_carro_favoritado
+                    else R.string.msg_carro_desfavoritado)
+            }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -79,5 +100,7 @@ class CarroActivity : BaseActivity() {
                 toast("Ocorreu um erro ao deletar o carro")
             })
     }
+
+
 
 }

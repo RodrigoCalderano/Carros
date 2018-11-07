@@ -1,8 +1,9 @@
 package com.example.linux.carros.domain
 
+import android.util.Log
 import com.example.linux.carros.domain.dao.DatabaseManager
 
-object FaboritoService {
+object FavoritosService {
     // Retorna todos os carros favoritados
     fun getCarros(): List<Carro> {
         val dao = DatabaseManager.getCarroDAO()
