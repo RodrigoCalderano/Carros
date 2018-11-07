@@ -5,12 +5,14 @@ import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
+import android.support.v4.view.ViewPager
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
 import com.example.linux.carros.R
 import com.example.linux.carros.adapter.TabsAdapter
 import com.example.linux.carros.domain.TipoCarro
 import com.example.linux.carros.extensions.setupToolbar
+import com.example.linux.carros.utils.Prefs
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.include_toolbar.*
@@ -57,6 +59,19 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         tabLayout.setTabTextColors(cor, cor)
         // Cor da barrinha de seleção
         tabLayout.setSelectedTabIndicatorColor(cor)
+
+        // Salva e Recupera a última tab acessada
+        // Ao fechar o app, ele volta na tab que estava ao fechar
+        val tabIdx = Prefs.tabIdx
+        viewPager.currentItem = tabIdx
+        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(p0: Int) { }
+            override fun onPageScrolled(p0: Int, p1: Float, p2: Int) { }
+            override fun onPageSelected(page: Int) {
+                // Salva o índice da página/tab selecionada
+                Prefs.tabIdx = page
+            }
+        })
     }
 
     override fun onBackPressed() {

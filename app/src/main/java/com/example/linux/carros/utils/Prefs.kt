@@ -23,7 +23,9 @@ object Prefs {
         return i
     }
 
-    // Forma reduzida
+    /**
+    // Forma reduzida:
+    **/
     fun setString(flag: String, valor : String) = prefs().edit().putString(flag, valor).apply()
 
 
@@ -32,4 +34,19 @@ object Prefs {
         val s = pref.getString(flag, "")
         return s
     }
+
+    var tabIdx: Int
+        get() = getInt("tabIdx")
+        set(value) = setInt("tabIdx", value)
+
+
+    /** EXEMPLO DE USO
+
+    // Para salvar:
+    // Prefs.setString("nome", "Rodrigo")
+    // Para ler:
+    // String s = Prefs.getString("nome")
+
+     **/
+
 }

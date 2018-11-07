@@ -1,11 +1,16 @@
 package com.example.linux.carros.domain
 
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.PrimaryKey
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
+@Entity(tableName = "carro")
 class Carro : Parcelable {
+
+    @PrimaryKey
     var id:Long = 0
     var tipo = ""
     var nome = ""
