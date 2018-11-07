@@ -1,9 +1,12 @@
 package com.example.linux.carros.activity
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.res.ColorStateList
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.example.linux.carros.R
@@ -41,6 +44,15 @@ class CarroActivity : BaseActivity() {
         // fab
         setFabColor()
         fab.setOnClickListener { onClickFavoritar(carro) }
+        // Foto do carro embaixo do botão Play (com transparência)
+        img.loadUrl(carro.urlFoto)
+        // Toca o vídeo
+        imgPlayVideo.setOnClickListener {
+            val url = carro.urlVideo
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.setDataAndType(Uri.parse(url), "video/*")
+            startActivity(intent)
+        }
     }
 
     private fun onClickFavoritar(carro: Carro) {
