@@ -14,6 +14,7 @@ import com.example.linux.carros.domain.*
 import com.example.linux.carros.domain.FavoritosService.isFavorito
 import com.example.linux.carros.extensions.loadUrl
 import com.example.linux.carros.extensions.setupToolbar
+import com.example.linux.carros.fragments.MapaFragment
 import kotlinx.android.synthetic.main.activity_carro.*
 import kotlinx.android.synthetic.main.include_activity_carro.*
 import org.greenrobot.eventbus.EventBus
@@ -32,10 +33,10 @@ class CarroActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_carro)
-        createSetup()
+        createSetup(savedInstanceState)
     }
 
-    private fun createSetup() {
+    private fun createSetup(savedInstanceState: Bundle?) {
         setupToolbar(R.id.toolbarAC, carro.nome, true)
         // Atualiza a descrição do carro
         tDesc.text = carro.desc
@@ -52,6 +53,17 @@ class CarroActivity : BaseActivity() {
             val intent = Intent(Intent.ACTION_VIEW)
             intent.setDataAndType(Uri.parse(url), "video/*")
             startActivity(intent)
+        }
+        // LatLng
+        tLatLng.text = carro.latitude + "/" + carro.longitude
+        // Adiciona o fragment do Mapa
+        if(savedInstanceState == null) {
+            val mapaFragment = MapaFragment()
+            mapaFragment.arguments = intent.extras
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.mapaFragment, mapaFragment)
+                .commit()
         }
     }
 

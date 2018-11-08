@@ -19,7 +19,9 @@ class Carro : Parcelable {
     var urlInfo = ""
     var urlVideo = ""
     var latitude = ""
+        get() = if (field.trim().isEmpty()) "0.0" else field
     var longitude = ""
+        get() = if (field.trim().isEmpty()) "0.0" else field
 
     // A vantagem de parcelable é otimizar o código, porém serializable é mais simples
     // Tem framework que ajuda na geração desse código - (android parcelable)

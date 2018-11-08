@@ -1,20 +1,22 @@
 package com.example.linux.carros.activity
 
+import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.design.widget.NavigationView
-import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.app.ActionBarDrawerToggle
+import android.support.v7.app.AlertDialog
 import android.view.MenuItem
 import com.example.linux.carros.R
 import com.example.linux.carros.adapter.TabsAdapter
 import com.example.linux.carros.domain.TipoCarro
 import com.example.linux.carros.extensions.setupToolbar
+import com.example.linux.carros.utils.PermissionUtils
 import com.example.linux.carros.utils.Prefs
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.include_toolbar.*
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
@@ -35,6 +37,31 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             // Abre a tela de cadastro
             startActivity<CarroFormActivity>()
         }
+        // Solicita as permissões
+        PermissionUtils.validate(this, 1,
+            android.Manifest.permission.ACCESS_FINE_LOCATION,
+            android.Manifest.permission.ACCESS_COARSE_LOCATION)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
+                                            grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        for (result in grantResults) {
+            if (result == PackageManager.PERMISSION_DENIED) {
+                // Alguma permissão foi negada, BOB! Do something!
+                alertAndFinish()
+                return
+            }
+        }
+    }
+
+    // Mostra o alerta de erro e fecha o aplicativo
+    private fun alertAndFinish() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(R.string.app_name).setMessage("Para utilizar este aplicativo, você precisa " +
+                "aceitar as permissões")
+        builder.setPositiveButton("OK") { dialog, id -> finish() }
+        builder.create().show()
     }
 
     private fun setUpNavDrawer() {

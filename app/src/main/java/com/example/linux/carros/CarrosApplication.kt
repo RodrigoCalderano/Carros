@@ -1,9 +1,9 @@
 package com.example.linux.carros
 
-import android.app.Application
+import android.support.multidex.MultiDexApplication
 import android.util.Log
 
-class CarrosApplication : Application() {
+class CarrosApplication : MultiDexApplication() {
     private val TAG = "CarrosApplication"
     // Chamado quando o Android criar o processo do aplicativo
     override fun onCreate() {
